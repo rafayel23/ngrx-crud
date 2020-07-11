@@ -25,7 +25,10 @@ export class UserListComponent implements OnInit {
   dataSource: MatTableDataSource<User> = new MatTableDataSource<User>();
 
   openUserForm(payload = null): void {
-    this.dialog.open(AddUserFormComponent, { data: payload })
+    this.dialog.open(AddUserFormComponent, {
+      disableClose: true,
+      data: payload,
+    })
     .afterClosed()
     .subscribe(user => {
       // Don't know why but dataSource is not dynamic
