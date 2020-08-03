@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { UserManagerService } from '../user-manager.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddUserFormComponent } from '../add-user-form/add-user-form.component';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource, MatTable } from '@angular/material/table';
 
 export interface UserResponse {
   id: string;
@@ -29,6 +29,9 @@ export class UserListComponent implements OnInit {
   displayedColumns: string[] = ['name', 'email', 'actions'];
   dataSource: MatTableDataSource<UserResponse> = new MatTableDataSource<UserResponse>();
 
+  @ViewChild(MatTable)
+  table: MatTable<UserResponse>;
+
   openUserForm(payload = null): void {
     this.dialog.open(AddUserFormComponent, {
       disableClose: true,
@@ -36,25 +39,22 @@ export class UserListComponent implements OnInit {
     })
     .afterClosed()
     .subscribe(user => {
-      // Don't know why but dataSource is not dynamic
-      // for example datasource.data.push(...) doesn't work
-      const { data } = this.dataSource;
-      const userIndex = data.findIndex(({id}) => id === user.id);
-      if (userIndex !== -1) {
-        data[userIndex] = user;
+      if ('id' in user) {
+        const targetUser = this.dataSource.data.find(({id}) => user.id === id);
+        Object.assign(targetUser, user);
       } else {
-        data.push(user);
+        this.dataSource.data.push(user);
       }
-      this.dataSource.data = data;
+      this.table.renderRows();
     });
   }
 
   removeUser(user): void {
     this.userManager.deleteUser(user.id)
     .subscribe(() => {
-      const { data } = this.dataSource;
-      data.splice(data.indexOf(user), 1);
-      this.dataSource.data = data;
+      const targetIndex = this.dataSource.data.indexOf(user);
+      this.dataSource.data.splice(targetIndex, 1);
+      this.table.renderRows();
     });
   }
 
