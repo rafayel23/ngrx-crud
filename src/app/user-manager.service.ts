@@ -1,31 +1,31 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User } from './user-list/user-list.component';
+import { UserRequest, UserResponse } from './user-list/user-list.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserManagerService {
 
-  apiEndpoint = 'https://jsonplaceholder.typicode.com';
+  apiEndpoint = 'http://localhost:3000';
 
   constructor(private http: HttpClient) {}
 
-  getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.apiEndpoint + '/users');
+  getUsers(): Observable<UserResponse[]> {
+    return this.http.get<UserResponse[]>(this.apiEndpoint + '/users');
   }
 
-  addUser(user: User): Observable<User> {
-    return this.http.post<User>(this.apiEndpoint + '/users', user);
+  addUser(user: UserRequest): Observable<UserResponse> {
+    return this.http.post<UserResponse>(this.apiEndpoint + '/users', user);
   }
 
-  deleteUser(id: number): Observable<void> {
+  deleteUser(id: string): Observable<void> {
     return this.http.delete<void>(this.apiEndpoint + '/users/' + id);
   }
 
-  updateUser(id: number, user: User): Observable<User> {
-    return this.http.put<User>(this.apiEndpoint + '/users/' + id, user);
+  updateUser(id: string, user: UserRequest): Observable<UserResponse> {
+    return this.http.put<UserResponse>(this.apiEndpoint + '/users/' + id, user);
   }
 
 }

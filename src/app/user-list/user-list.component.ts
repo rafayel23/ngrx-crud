@@ -4,8 +4,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddUserFormComponent } from '../add-user-form/add-user-form.component';
 import { MatTableDataSource } from '@angular/material/table';
 
-export interface User {
-  id: number;
+export interface UserResponse {
+  id: string;
+  name: string;
+  email: string;
+}
+
+export interface UserRequest {
   name: string;
   email: string;
 }
@@ -22,7 +27,7 @@ export class UserListComponent implements OnInit {
     private dialog: MatDialog) {}
 
   displayedColumns: string[] = ['name', 'email', 'actions'];
-  dataSource: MatTableDataSource<User> = new MatTableDataSource<User>();
+  dataSource: MatTableDataSource<UserResponse> = new MatTableDataSource<UserResponse>();
 
   openUserForm(payload = null): void {
     this.dialog.open(AddUserFormComponent, {

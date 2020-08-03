@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UserManagerService } from '../user-manager.service';
-import { User } from '../user-list/user-list.component';
+import { UserResponse } from '../user-list/user-list.component';
 
 @Component({
   selector: 'app-add-user-form',
@@ -17,7 +17,7 @@ export class AddUserFormComponent implements OnInit {
     private fb: FormBuilder,
     private userManager: UserManagerService,
     private dialogRef: MatDialogRef<AddUserFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public payload: User) {}
+    @Inject(MAT_DIALOG_DATA) public payload: UserResponse) {}
 
   ngOnInit(): void {
     this.userForm = this.fb.group({
