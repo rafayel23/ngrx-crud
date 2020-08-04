@@ -1,17 +1,30 @@
-<form (ngSubmit)="payload ? updateUser() : addUser()" [formGroup]="userForm">
+<div class="modal-container">
 
-  <h3>{{payload ? 'Edit User' : 'Add User'}}</h3>
-  <mat-form-field class="full-width indent">
-    <input formControlName="name" type="text" matInput placeholder="name">
-    <mat-error *ngIf="name.invalid">Name is required</mat-error>
-  </mat-form-field>
+  <mat-icon mat-dialog-close>close</mat-icon>
 
-  <mat-form-field class="full-width indent">
-    <input formControlName="email" type="text" matInput placeholder="email">
-    <mat-error *ngIf="email.hasError('required')">Email is required</mat-error>
-    <mat-error *ngIf="email.hasError('email')">Invalid format</mat-error>
-  </mat-form-field>
+  <form (ngSubmit)="payload ? updateUser() : addUser()" [formGroup]="userForm">
 
-  <button class="full-width" mat-raised-button type="submit" [disabled]="userForm.invalid">Submit</button>
+    <h2>{{payload ? 'Edit User' : 'Add User'}}</h2>
+    <mat-form-field class="full-width indent">
+      <input formControlName="name" type="text" matInput placeholder="name">
+      <mat-error *ngIf="name.invalid">Name is required</mat-error>
+    </mat-form-field>
 
-</form>
+    <mat-form-field class="full-width indent">
+      <input formControlName="email" type="text" matInput placeholder="email">
+      <mat-error *ngIf="email.hasError('required')">Email is required</mat-error>
+      <mat-error *ngIf="email.hasError('email')">Invalid format</mat-error>
+    </mat-form-field>
+
+    <button
+      mat-dialog-close
+      mat-raised-button
+      class="full-width"
+      type="submit"
+      [disabled]="userForm.invalid">
+      Submit
+    </button>
+
+  </form>
+
+</div>

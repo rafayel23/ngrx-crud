@@ -1,8 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { UserManagerService } from '../user-manager.service';
-import { UserResponse } from '../user-list/user-list.component';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { User, State } from '../interfaces';
+import { Store } from '@ngrx/store';
+import { addUser, updateUser } from '../actions';
 
 @Component({
   selector: 'app-add-user-form',
@@ -14,10 +15,9 @@ export class AddUserFormComponent implements OnInit {
   userForm: FormGroup;
 
   constructor(
+    private store: Store<State>,
     private fb: FormBuilder,
-    private userManager: UserManagerService,
-    private dialogRef: MatDialogRef<AddUserFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public payload: UserResponse) {}
+    @Inject(MAT_DIALOG_DATA) public payload: User) {}
 
   ngOnInit(): void {
     this.userForm = this.fb.group({
@@ -39,13 +39,11 @@ export class AddUserFormComponent implements OnInit {
   }
 
   addUser(): void {
-    this.userManager.addUser(this.userForm.value)
-    .subscribe(user => this.dialogRef.close(user));
+    this.store.dispatch(addUser({ user: this.userForm.value }));
   }
 
   updateUser(): void {
-    this.userManager.updateUser(this.payload.id, this.userForm.value)
-    .subscribe(user => this.dialogRef.close(user));
+    this.store.dispatch(updateUser({ id: this.payload.id, user: this.userForm.value }));
   }
 
 }

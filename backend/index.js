@@ -27,6 +27,7 @@ server.route('/users')
   .get((req, res) => {
     const { users } = readDB();
     res.status(200).send(users);
+    // res.status(400).send("Can't load users");
   })
   .post((req, res) => {
     const data = readDB();
@@ -34,6 +35,7 @@ server.route('/users')
     data.users.push(req.body);
     writeDB(data);
     res.status(201).send(req.body);
+    // res.status(400).send("Can't add user");
   });
 
 server.route('/users/:id')
@@ -44,6 +46,7 @@ server.route('/users/:id')
     Object.assign(targetUser, req.body);
     writeDB(data);
     res.status(201).send(targetUser);
+    // res.status(400).send("Can't update user");
   })
   .delete((req, res) => {
     const { id } = req.params
@@ -52,6 +55,7 @@ server.route('/users/:id')
     data.users.splice(targetUserIndex, 1);
     writeDB(data);
     res.status(204).send();
+    // res.status(400).send("Can't delete user");
   });
 
 server.listen(PORT, () => {

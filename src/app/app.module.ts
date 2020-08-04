@@ -18,6 +18,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { AppComponent } from './app.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { AddUserFormComponent } from './add-user-form/add-user-form.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { UsersEffects } from './effects';
+
+import { usersReducer, errorMessageReducer } from './reducers';
 
 
 @NgModule({
@@ -39,6 +44,12 @@ import { AddUserFormComponent } from './add-user-form/add-user-form.component';
     MatMenuModule,
     MatButtonModule,
     MatIconModule,
+
+    StoreModule.forRoot({
+      users: usersReducer,
+      error: errorMessageReducer,
+    }),
+    EffectsModule.forRoot([UsersEffects])
   ],
   providers: [],
   bootstrap: [AppComponent]
